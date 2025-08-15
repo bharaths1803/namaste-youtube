@@ -1,16 +1,38 @@
-import React from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { toggleMenu } from "../utils/appSlice";
+import { YOUTUBE_SEARCH_API } from "../utils/constants";
+import { cacheResults } from "../utils/searchSlice";
 
 const Header = () => {
   const dispatch = useDispatch();
+  const search = useSelector((store) => store.search);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
 
   const handleToggleMenu = () => {
     dispatch(toggleMenu());
   };
 
+  const handleSearch = async () => {
+    const data = await fetch(YOUTUBE_SEARCH_API + searchQuery);
+    const json = await data.json();
+    setSuggestions(json[1]);
+    dispatch(cacheResults({ [searchQuery]: json[1] }));
+  };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (search[searchQuery]) {
+        console.log("In search query", search[searchQuery]);
+        setSuggestions(search[searchQuery]);
+      } else handleSearch();
+    }, 200);
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
   return (
-    <div className="p-5 m-2 shadow-lg grid grid-flow-col">
+    <div className="p-5 shadow-lg grid grid-flow-col fixed w-full bg-white">
       <div className="col-span-1 flex">
         <img
           onClick={handleToggleMenu}
@@ -26,14 +48,29 @@ const Header = () => {
           />
         </a>
       </div>
-      <div className="cols-span-10 px-10">
-        <input
-          type="text"
-          className="w-1/2 border border-gray-400 rounded-l-full p-2"
-        />
-        <button className="rounded-r-full px-4 py-2 border border-gray-400 bg-gray-100">
-          Search
-        </button>
+      <div className="col-span-10 px-10">
+        <div>
+          <input
+            type="text"
+            className="w-1/2 border border-gray-400 rounded-l-full p-2"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <button className="rounded-r-full px-4 py-2 border border-gray-400 bg-gray-100">
+            Search
+          </button>
+        </div>
+        {suggestions.length > 0 && (
+          <div className="w-[37rem] bg-white p-2 rounded-lg shadow-lg fixed border border-gray-100">
+            <ul className="">
+              {suggestions.map((s) => (
+                <li className="px-4 py-2 hover:bg-gray-100" key={s}>
+                  🔎 {s}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
       <div className="col-span-1">
         <img
