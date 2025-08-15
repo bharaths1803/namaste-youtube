@@ -5,6 +5,6 @@ export const YOUTUBE_VEDIO_API =
   YOUTUBE_API_KEY;
 
 export const YOUTUBE_SEARCH_API =
-  "http://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q=";
+  "https://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q=";
 
 export const MESSAGES_CNT_IN_CHAT = 10;
