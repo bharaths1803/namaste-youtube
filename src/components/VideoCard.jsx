@@ -1,6 +1,4 @@
 const VideoCard = ({ info }) => {
-  console.log("Video info", info);
-
   const { snippet, statistics } = info;
   const { title, channelTitle, thumbnails } = snippet;
 

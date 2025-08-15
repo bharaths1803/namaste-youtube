@@ -6,9 +6,7 @@ const searchSlice = createSlice({
   reducers: {
     cacheResults: (state, action) => {
       const [k, v] = Object.entries(action.payload)[0];
-      console.log("Action paylod in search slice", k, v);
       state[k] = v;
-      console.log("State", state[k]);
     },
   },
 });

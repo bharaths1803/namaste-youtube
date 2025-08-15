@@ -6,8 +6,6 @@ import LiveChat from "./LiveChat";
 const WatchPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  console.log("Url v values", searchParams.get("v"));
-
   return (
     <div className="mt-5 flex flex-col w-full">
       <div className="px-5 flex w-full">

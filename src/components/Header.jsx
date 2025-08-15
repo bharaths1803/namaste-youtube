@@ -23,10 +23,8 @@ const Header = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (search[searchQuery]) {
-        console.log("In search query", search[searchQuery]);
-        setSuggestions(search[searchQuery]);
-      } else handleSearch();
+      if (search[searchQuery]) setSuggestions(search[searchQuery]);
+      else handleSearch();
     }, 200);
     return () => clearTimeout(timer);
   }, [searchQuery]);
